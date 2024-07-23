@@ -16,17 +16,19 @@
 // interpret the release of the button when held with a button release meant for a press, 
 // it is then set back to 0 when the button is inactive.
 
+#include "set.h"
+
+// Variable Declaration for button
 word button_states = 0;
 word button_input;
-
 const word push_mask = 0b0000000000000011; // to keep the last 2 bits / button inputs
 byte disable_button_push = 0;
 
+// Food Recommender
 typedef struct food_item{
   const char* food_name;
   uint8_t val;
 } food_item;
-
 
 food_item array[69] = {
   { "Pastitsio", 1 },
@@ -100,13 +102,18 @@ food_item array[69] = {
   { "XulopitesMeMelitzanes", 122 } // 121 + 1
 };
 
+// A set that contains all the food items that have been recommended 
+// in this session, as to not have repeats.
+Set already_recommended;
+
+
 
 void setup() {
   Serial.begin(300);
   pinMode(7, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
-  Serial.print(next_item());
 }
+
 
 void loop() {
     button_input = digitalRead(7);
@@ -132,6 +139,7 @@ void loop() {
         disable_button_push = 0;
     }
 }
+
 
 // The next_item() function returns a random food to be displayed on the LCD
 // The algorithm used picks a random integer in the range [0, 122] and this integer 
@@ -162,13 +170,19 @@ const char* next_item() {
   while (low <= high) {
     mid = low + (high - low) / 2;
 
-    if (array[mid].val == rand_num)
-      return array[mid].food_name;
+    if (array[mid].val == rand_num) 
+      break;
     else if (array[mid].val < rand_num)
       low = mid + 1;
     else
       high = mid - 1;
   }
 
+  // if this food item has already been recommended before we
+  // return NULL and call the the function again, else we return 
+  // the name of the food. 
+  if(already_recommended.has(mid)) return NULL;
+
+  already_recommended.add(mid);
   return array[mid].food_name;
 }
