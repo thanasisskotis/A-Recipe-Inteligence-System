@@ -114,32 +114,17 @@ void setup() {
   pinMode(7, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
 
+  already_recommended.clear();
+
   //rtc
-  ThreeWire myWire(7, 6, 8); // IO, SCLK, CE
-  RtcDS1302<ThreeWire> rtc(myWire);
-  rtc.Begin();
-    
-    const RtcDateTime compile_time(__DATE__, __TIME__);
-    
-    rtc.SetDateTime(compile_time);
-
-    if (rtc.GetIsWriteProtected()) {
-        rtc.SetIsWriteProtected(false);
-    }
-
-    if (!rtc.GetIsRunning()) {
-        rtc.SetIsRunning(true);
-    }
-
-    RtcDateTime now = rtc.GetDateTime();
-    if (now < compile_time) {
-        rtc.SetDateTime(compile_time);
-    }
+  init_rtc(__DATE__, __TIME__);
 }
 
 
 void loop() {
-//  Serial.println(datetime_seed());
+  //Serial.println(datetime_seed());
+  Serial.println(next_item());
+  delay(500);
 
   button_input = digitalRead(7);
   button_states = button_states << 1;
@@ -187,6 +172,7 @@ void loop() {
 const char* next_item() {
   randomSeed(datetime_seed());  // add current time as the seed
   uint8_t rand_num = random(0, 121);
+  Serial.println(rand_num);
 
   // Binary Search Algortihm to find the food item
   int mid, low = 0, high = 68;
@@ -204,7 +190,7 @@ const char* next_item() {
   // if this food item has already been recommended before we
   // return NULL and call the the function again, else we return
   // the name of the food.
-  if (already_recommended.has(mid)) return NULL;
+  if (already_recommended.has(mid)) return "patata";
 
   already_recommended.add(mid);
   return array[mid].food_name;
