@@ -40,13 +40,13 @@ void init_rtc(const char* date, const char* time) {
 }
 
 // returns the day {1:M, 2:T, 3:W, 4:T, 5:F, 6:S, 7:S}
-uint8_t day() {
+uint8_t Day() {
     RtcDateTime current_time = rtc.GetDateTime();
     uint8_t day = current_time.DayOfWeek();
     return day == 0 ? 7 : day;
 }
 
-uint8_t month() {
+uint8_t Month() {
     RtcDateTime current_time = rtc.GetDateTime();
     return current_time.Month();
 }
