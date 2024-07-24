@@ -17,10 +17,10 @@ RtcDS1302<ThreeWire> rtc(myWire);
 // to start the RTC and initialize it with the current time
 // returns true if it is running correctly, else false
 // init_rtc(YY, MM, DD, HH, MM, SS)
-void init_rtc() {
+void init_rtc(const char* date, const char* time) {
     rtc.Begin();
     
-    const RtcDateTime compile_time(__DATE__, __TIME__);
+    const RtcDateTime compile_time(date, time);
     
     rtc.SetDateTime(compile_time);
 
