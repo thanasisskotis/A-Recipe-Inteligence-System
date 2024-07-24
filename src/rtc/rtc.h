@@ -7,7 +7,7 @@
 #include "RtcDS1302.h"
 
 
-void init_rtc();
+void init_rtc(const char* compile_date, const char* compile_time);
 
 uint8_t day();
 
