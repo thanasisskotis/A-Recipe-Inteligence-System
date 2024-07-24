@@ -9,9 +9,9 @@
 
 void init_rtc(const char* compile_date, const char* compile_time);
 
-uint8_t day();
+uint8_t Day();
 
-uint8_t month();
+uint8_t Month();
 
 unsigned long datetime_seed();
 
