@@ -25,6 +25,8 @@ word button_input;
 const word push_mask = 0b0000000000000011;  // to keep the last 2 bits / button inputs
 byte disable_button_push = 0;
 
+uint8_t remaining_foods;
+
 // Food Recommender
 typedef struct food_item {
   const char* food_name;
@@ -119,26 +121,20 @@ food_item array[69] = {
 // in this session, as to not have repeats.
 Set already_recommended;
 
-//Set chosen;
-
 
 void setup() {
-  Serial.begin(300);
-  pinMode(7, INPUT);
+  Serial.begin(9600);
+  pinMode(12, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
-
-  already_recommended.clear();
 
   //rtc
   init_rtc(__DATE__, __TIME__);
+  Serial.println(Month());
 }
 
 
 void loop() {
-  Serial.println(next_item());
-  delay(500);
-
-  button_input = digitalRead(7);
+  button_input = digitalRead(12);
   button_states = button_states << 1;
   button_states = button_states | button_input;
 
@@ -148,7 +144,15 @@ void loop() {
 
   if ((button_states & push_mask) == 2 && !disable_button_push) {  // button push - Action 1
     digitalWrite(LED_BUILTIN, 1);
-    //
+    
+    char* food = NULL;
+    while(food == NULL && remaining_foods > 0) {
+      food = next_item();
+      --remaining_foods;
+    }
+    if(remaining_foods == 0) Serial.println("No more options left.");
+
+    Serial.println(food);
   } 
   else if (button_states == 0b1111111111111111) {  // button hold - Action 2
     digitalWrite(LED_BUILTIN, 1);
@@ -190,6 +194,9 @@ const char* next_item() {
   uint8_t day = Day();
   int8_t low, high;
 
+  // random number generator
+  randomSeed(datetime_seed());
+
   switch(Month()){
     // Winter
     case 11:
@@ -225,8 +232,16 @@ const char* next_item() {
         high = 20;
       }
       else{ // both - summer
-        low = -35;
-        high = 20;
+        // choosing 1 of the 2 groups between meat and non-meat
+        //beacause the range wraps around
+        if(random(0,2) == 0){
+          low = 0;
+          high = 20;
+        }
+        else{
+          low = 34;
+          high = 68;
+        }
       }
       break;
 
@@ -245,18 +260,17 @@ const char* next_item() {
         high = 68;
       }
   }
+  remaining_foods = high - low + 1;
 
-
-  // random number generator
-  randomSeed(datetime_seed());  
+  uint8_t rand_num;
   if(low > 0) {
-    uint8_t rand_num = random(array[low-1].val + 1, array[high].val);
+    rand_num = random(array[low-1].val + 1, array[high].val + 1);
   }
   else if(low == 0) {
-    uint8_t rand_num = random(0, array[high].val);
+    rand_num = random(0, array[high].val + 1);
   }
   else {
-    uint8_t rand_num = random(array[low + 69 - 1].val + 1, array[high].val);
+    rand_num = random(array[low + 69 - 1].val + 1, array[high].val + 1);
   }
 
   // Binary Search Algortihm to find the food item
@@ -278,7 +292,7 @@ const char* next_item() {
   // if this food item has already been recommended before we
   // return NULL and call the the function again, else we return
   // the name of the food.
-  if (already_recommended.has(mid)) return "patata";
+  if (already_recommended.has(mid)) return NULL;
 
   already_recommended.add(mid);
   return array[mid].food_name;
