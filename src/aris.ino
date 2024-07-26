@@ -25,7 +25,8 @@ word button_input;
 const word push_mask = 0b0000000000000011;  // to keep the last 2 bits / button inputs
 byte disable_button_push = 0;
 
-uint8_t remaining_foods;
+uint8_t already_recommended_num = 0;
+
 
 // Food Recommender
 typedef struct food_item {
@@ -122,14 +123,16 @@ food_item array[69] = {
 Set already_recommended;
 
 
+
 void setup() {
   Serial.begin(9600);
   pinMode(12, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+  
+  randomSeed(datetime_seed());
 
   //rtc
-  init_rtc(__DATE__, __TIME__);
-  Serial.println(Month());
+  init_rtc("__DATE__", __TIME__);
 }
 
 
@@ -146,12 +149,9 @@ void loop() {
     digitalWrite(LED_BUILTIN, 1);
     
     char* food = NULL;
-    while(food == NULL && remaining_foods > 0) {
+    while(food == NULL) {
       food = next_item();
-      --remaining_foods;
     }
-    if(remaining_foods == 0) Serial.println("No more options left.");
-
     Serial.println(food);
   } 
   else if (button_states == 0b1111111111111111) {  // button hold - Action 2
@@ -193,9 +193,6 @@ const char* next_item() {
   // for selection by adjusting Binary search's bounds
   uint8_t day = Day();
   int8_t low, high;
-
-  // random number generator
-  randomSeed(datetime_seed());
 
   switch(Month()){
     // Winter
@@ -260,7 +257,9 @@ const char* next_item() {
         high = 68;
       }
   }
-  remaining_foods = high - low + 1;
+  // if we have already recommended all the available foods
+  // for this session then we return 
+  if(already_recommended_num == high - low + 1) return "No options left.";
 
   uint8_t rand_num;
   if(low > 0) {
@@ -294,6 +293,9 @@ const char* next_item() {
   // the name of the food.
   if (already_recommended.has(mid)) return NULL;
 
+  // Every time a food is picked to be displayed on screen 
+  // it gets added to the set as to not get recommended again this session 
   already_recommended.add(mid);
+  ++already_recommended_num;
   return array[mid].food_name;
 }
