@@ -5,13 +5,6 @@
 #include <RtcDS1302.h>
 #include "rtc.h"
 
-// The file for interacting with the RTC module
-// Encapsulation 
-
-#include <ThreeWire.h> 
-#include <RtcDS1302.h>
-#include "rtc.h"
-
 
 // might change later 
 // IO / DAT = 6
