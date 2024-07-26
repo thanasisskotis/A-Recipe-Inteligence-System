@@ -29,13 +29,10 @@ void init_rtc(const char* date, const char* time) {
     rtc.Begin();
     
     const RtcDateTime compile_time = RtcDateTime(date, time);
-    Serial.println(compile_time.Month());
     
     rtc.SetDateTime(compile_time);
 
-
     RtcDateTime current_time = rtc.GetDateTime();
-    Serial.println(current_time.Month());
     
     if (rtc.GetIsWriteProtected()) {
         rtc.SetIsWriteProtected(false);
