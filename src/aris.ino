@@ -320,36 +320,36 @@ void print_food_greek (char* food_item) {
     // The rest need to be either used from the few cases of greek character in the LCDs ROM or the custom characters we made 
     switch(c) {
       case 'G':
-        food_item[i] = // custom
+        lcd.write((byte)); // custom
         break;
       case 'D':
-        food_item[i] = // custom
+        lcd.write((byte)); // custom
         break;
       case '8':
-        food_item[i] = // custom
+        lcd.write((byte)); // custom
         break;
       case 'L':
-        food_item[i] = // custom
+        lcd.write((byte)); // custom
         break;
       case 'J':
-        food_item[i] = // LCD ROM
+        lcd.write(); // LCD ROM
       case 'P':
-        food_item[i] = // LCD ROM
+        lcd.write(); // LCD ROM
         break;
       case 'R':
         lcd.write('P');
         break;
       case 'S':
-        food_item[i] = // LCD ROM
+        lcd.write(); // LCD ROM
         break;
       case 'F':
-        food_item[i] = // custom
+        lcd.write((byte)); // custom
         break;
       case 'Q':
-        food_item[i] = // custom
+        lcd.write((byte)); // custom
         break;
       case 'W':
-        food_item[i] = // LCD ROM
+        lcd.write(); // LCD ROM
         break;
     }
 
