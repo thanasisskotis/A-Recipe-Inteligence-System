@@ -18,6 +18,7 @@
 
 #include "set.h"
 #include "rtc.h"
+#include <LiquidCrystal.h>
 
 // Variable Declaration for button
 word button_states = 0;
@@ -36,108 +37,114 @@ typedef struct food_item {
 
 food_item array[69] = {
 // Meat - Summer
-  { "Koloku8akiaGemista", 2 },
+  { "KOLOKY8AKIA GEMISTA", 2 },
 
 // Meat - FFA 
-  { "Pastitsio", 3 },
-  { "MakaroniaMeKima", 6 },         // 1 + 3
-  { "Kanelonia", 7 },               // 4 + 1
-  { "KreasMeRuzi", 10 },             // 5 + 3
-  { "Giouvetsi", 12 },              // 8 + 2
-  { "KreasMeXulopites", 13 },       // 10 + 1
-  { "KreasMeMakaronia", 14 },       // 11 + 1
-  { "KreasMePatates", 18 },         // 12 + 4
-  { "KreasLemonato", 21 },          // 16 + 3
-  { "KreasKokkinisto", 24 },        // 19 + 3
-  { "KreasMePoure", 26 },           // 22 + 2
-  { "Sukwti", 28 },                 // 24 + 2
-  { "Mpiftekia", 31 },              // 26 + 3
-  { "Keftedakia", 32 },             // 29 + 1
-  { "Spetsofai", 33 },              // 30 + 1
-  { "Soutzoukakia", 34 },           // 31 + 1
-  { "Mprizoles", 35 },              // 32 + 1
-  { "Rolo", 36 },                   // 33 + 1
-  { "Papoutsakia", 37 },            // 34 + 1
-  { "Thgania", 38 },                // 35 + 1
+  { "PASTITSIO", 3 },
+  { "MAKARONIA ME KIMA", 6 },         // 1 + 3
+  { "KANELONIA", 7 },               // 4 + 1
+  { "KREAS ME RYZI", 10 },             // 5 + 3
+  { "GIOYVETSI", 12 },              // 8 + 2
+  { "KREAS ME XYLOPITES", 13 },       // 10 + 1
+  { "KREAS ME MAKARONIA", 14 },       // 11 + 1
+  { "KREAS ME PATATES", 18 },         // 12 + 4
+  { "KREAS LEMONATO", 21 },          // 16 + 3
+  { "KREAS KOKKINISTO", 24 },        // 19 + 3
+  { "KREAS ME POURE", 26 },           // 22 + 2
+  { "SYKWTI", 28 },                 // 24 + 2
+  { "MPIFTEKIA", 31 },              // 26 + 3
+  { "KEFTEDAKIA", 32 },             // 29 + 1
+  { "SPETSOFAI", 33 },              // 30 + 1
+  { "SOUTZOUKAKIA", 34 },           // 31 + 1
+  { "MPRIZOLES", 35 },              // 32 + 1
+  { "ROLO", 36 },                   // 33 + 1
+  { "PAPOUTSAKIA", 37 },            // 34 + 1
+  { "THGANIA", 38 },                // 35 + 1
   
 // Meat - Winter
-  { "Stifado", 39 },               
-  { "Laxanontolmades", 41 },       
-  { "Frikase", 42 },               
-  { "Mplougourosoupa", 44 },       
-  { "Kotosoupa", 45 }, 
+  { "STIFADO", 39 },               
+  { "LAXANONTOLMADES", 41 },       
+  { "FRIKASE", 42 },               
+  { "MPLOYGOYROSOYPA", 44 },       
+  { "KOTOSOYPA", 45 }, 
 
 
 // Non Meat - Winter
-  { "Qarosoupa", 47 },             // 108 + 2
-  { "Xortosoupa", 51 },            // 110 + 4
-  { "Fasolada", 53 },              // 114 + 2
-  { "Revu8ia", 55 },               // 116 + 2
-  { "Fava", 56 },                  // 118 + 1
-  { "Traxanas", 57 },              // 119 + 1
-  { "Laxanoruzo", 58 },            // 120 + 1
-  { "XulopitesMeMelitzanes", 59 },
+  { "QAROSOYPA", 47 },             // 108 + 2
+  { "XORTOSOYPA", 51 },            // 110 + 4
+  { "FASOLADA", 53 },              // 114 + 2
+  { "REVY8IA", 55 },               // 116 + 2
+  { "FABA", 56 },                  // 118 + 1
+  { "TRAXANAS", 57 },              // 119 + 1
+  { "LAXANORYZO", 58 },            // 120 + 1
+  { "XYLOPITES ME MELITZANES", 59 },
 
 // Non Meat - FFA
-  { "Manestra", 60 },               // 36 + 1
-  { "Mpamies", 61 },                // 37 + 1
-  { "Spanakoruzo", 63 },            // 38 + 2
-  { "Soufle", 65 },                 // 40 + 2
-  { "Koloku8okeftedes", 66 },       // 42 + 1
-  { "MakaroniaMeSaltsa", 71 },      // 43 + 5
-  { "MakaroniaMeManitaria", 72 },   // 48 + 1
-  { "Tortelinia", 73 },             // 49 + 1
-  { "XulopitesMakries", 74 },       // 50 + 1
-  { "Kagianas", 75 },               // 51 + 1
-  { "Patatokroketes", 76 },         // 52 + 1
-  { "QariPlaki", 77 },              // 53 + 1
-  { "XylopitesKontes", 78 },        // 54 + 1
-  { "Fakes", 80 },                  // 55 + 2
-  { "ManitariaLadoriganh", 81 },    // 57 + 1
-  { "ManitariaAlaKrem", 82 },       // 58 + 1
-  { "Tsipoures", 86 },              // 59 + 4
-  { "Kokkinoqaro", 90 },            // 63 + 4
-  { "Mpakaliaros", 93 },            // 67 + 3
-  { "Galaios", 94 },                // 70 + 1
-  { "Prosfugakia", 95 },            // 71 + 1
-  { "Gavros", 97 },                 // 72 + 2
-  { "QarakiaThganita", 99 },        // 74 + 2
-  { "Garides", 100 },                // 76 + 1
-  { "Garidomakaronada", 101 },       // 77 + 1
-  { "Jespuria", 102 },               // 78 + 1
-  { "Gigantes", 103 },               // 79 + 1
-  { "Mpriam", 108 },                 // 80 + 5
-  { "PatatesMploum", 111 },          // 85 + 3
-  { "Arakas", 114 },                 // 88 + 3
-  { "ImamMpailnti", 115 },           
-  { "PilafiMeManitaria", 116 },
+  { "MANESTRA", 60 },               // 36 + 1
+  { "MPAMIES", 61 },                // 37 + 1
+  { "SPANAKORYZO", 63 },            // 38 + 2
+  { "SOYFLE", 65 },                 // 40 + 2
+  { "KOLOKY8OKEFTEDES", 66 },       // 42 + 1
+  { "MAKARONIA ME SALTSA", 71 },      // 43 + 5
+  { "MAKARONIA ME KIMA", 72 },   // 48 + 1
+  { "TORTELINIA", 73 },             // 49 + 1
+  { "XYLOPITES MAKRIES", 74 },       // 50 + 1
+  { "KAGIANAS", 75 },               // 51 + 1
+  { "PATATOKROKETES", 76 },         // 52 + 1
+  { "QARI PLAKI", 77 },              // 53 + 1
+  { "XYLOPITES KONTES", 78 },        // 54 + 1
+  { "FAKES", 80 },                  // 55 + 2
+  { "MANITARIA LADORIGANH", 81 },    // 57 + 1
+  { "MANITARIA ALA KREM", 82 },       // 58 + 1
+  { "TSIPOYRES", 86 },              // 59 + 4
+  { "KOKKINOQARO", 90 },            // 63 + 4
+  { "MPAKALIAROS", 93 },            // 67 + 3
+  { "GALAIOS", 94 },                // 70 + 1
+  { "PROSFYGAKIA", 95 },            // 71 + 1
+  { "GAVROS", 97 },                 // 72 + 2
+  { "QARAKIA THGANITA", 99 },        // 74 + 2
+  { "GARIDES", 100 },                // 76 + 1
+  { "GARIDOMAKARONADA", 101 },       // 77 + 1
+  { "JESPYRIA", 102 },               // 78 + 1
+  { "GIGANTES", 103 },               // 79 + 1
+  { "MPRIAM", 108 },                 // 80 + 5
+  { "PATATES MPLOYM", 111 },          // 85 + 3
+  { "ARAKAS", 114 },                 // 88 + 3
+  { "IMAM MPAILNTI", 115 },           
+  { "PILAFI ME MANITARIA", 116 },
 
 // Non Meat - Summer
-  { "Gemista", 119 },                
-  { "Koloku8okorfades", 120 },       
-  { "Fasolakia", 122 }
+  { "GEMISTA", 119 },                
+  { "KOLOKY8OKORFADES", 120 },       
+  { "FASOLAKIA", 122 }
 };
 
 // A set that contains all the food items that have been recommended
 // in this session, as to not have repeats.
 Set already_recommended;
 
-
+// The 
+LiquidCrystal lcd(12, 11, 2, 3, 4, 5);
 
 void setup() {
   Serial.begin(9600);
   pinMode(12, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   
+  // random
   randomSeed(datetime_seed());
 
-  //rtc
+  // rtc
   init_rtc("__DATE__", __TIME__);
+
+  // LCD
+  lcd.begin(16, 2);
+  lcd.clear();
 }
 
 
 void loop() {
-  button_input = digitalRead(12);
+  button_input = digitalRead(7);
   button_states = button_states << 1;
   button_states = button_states | button_input;
 
@@ -152,7 +159,7 @@ void loop() {
     while(food == NULL) {
       food = next_item();
     }
-    Serial.println(food);
+    print_food_greek(food);
   } 
   else if (button_states == 0b1111111111111111) {  // button hold - Action 2
     digitalWrite(LED_BUILTIN, 1);
@@ -298,4 +305,54 @@ const char* next_item() {
   already_recommended.add(mid);
   ++already_recommended_num;
   return array[mid].food_name;
+}
+
+// This function takes a string as an arguement and translates it to the appropriate greek (uppercase) characters and prints it on the lcd.
+void print_food_greek (char* food_item) {
+
+  // mapping the english character string to its equivelant greek character string for printing 
+  uint8_t i = 0;
+  char c;
+  while((c = food_item[i++]) != '\0') {
+    lcd.home();
+    
+    // Greek Letters A, B, E, Z, H, I, K, M, N, O, P, T, Y, X are present in the english alphabet so they need not be changed
+    // The rest need to be either used from the few cases of greek character in the LCDs ROM or the custom characters we made 
+    switch(c) {
+      case 'G':
+        food_item[i] = // custom
+        break;
+      case 'D':
+        food_item[i] = // custom
+        break;
+      case '8':
+        food_item[i] = // custom
+        break;
+      case 'L':
+        food_item[i] = // custom
+        break;
+      case 'J':
+        food_item[i] = // LCD ROM
+      case 'P':
+        food_item[i] = // LCD ROM
+        break;
+      case 'R':
+        lcd.write('P');
+        break;
+      case 'S':
+        food_item[i] = // LCD ROM
+        break;
+      case 'F':
+        food_item[i] = // custom
+        break;
+      case 'Q':
+        food_item[i] = // custom
+        break;
+      case 'W':
+        food_item[i] = // LCD ROM
+        break;
+    }
+
+  }
+
 }
