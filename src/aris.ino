@@ -332,9 +332,9 @@ void print_food_greek (char* food_item) {
         lcd.write((byte)3); // custom
         break;
       case 'J': // KSI
-        lcd.write(); // LCD ROM
-      case 'P': 
         lcd.write((byte)4); // custom
+      case 'P': 
+        lcd.write((byte)5); // custom
         break;
       case 'R':
         lcd.write('P');
@@ -343,10 +343,10 @@ void print_food_greek (char* food_item) {
         lcd.write(); // LCD ROM
         break;
       case 'F': 
-        lcd.write((byte)5); // custom
+        lcd.write((byte)6); // custom
         break;
       case 'Q':
-        lcd.write((byte)6); // custom
+        lcd.write((byte)7); // custom
         break;
       case 'W': // OMEGA
         lcd.write(244); // LCD ROM
