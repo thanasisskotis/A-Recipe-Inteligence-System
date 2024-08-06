@@ -126,9 +126,106 @@ Set already_recommended;
 // The 
 LiquidCrystal lcd(12, 11, 2, 3, 4, 5);
 
+// custom character 'Γ'
+byte GAMMA[8] = {
+  0b00000,
+  0b11111,
+  0b00000,
+  0b00000,
+  0b10000,
+  0b10000,
+  0b10000,
+  0b00000
+};
+
+// custom character 'Δ'
+byte DELTA[8] = {
+  0b00000,
+  0b00100,
+  0b01010,
+  0b01010,
+  0b10001,
+  0b10001,
+  0b11111,
+  0b00000
+};
+
+// custom character 'Θ'
+byte THETA[8] = {
+  0b00000,
+  0b01110,
+  0b10001,
+  0b10001,
+  0b11111,
+  0b10001,
+  0b11111,
+  0b01110
+};
+
+// custom character 'Λ'
+byte LAMDA[8] = {
+  0b00000,
+  0b00100,
+  0b01010,
+  0b01010,
+  0b10001,
+  0b10001,
+  0b10001,
+  0b00000  
+};
+
+// custom character 'Ξ'
+byte KSI[8] = {
+  0b00000,
+  0b11111,
+  0b00000,
+  0b00000,
+  0b11111,
+  0b00000,
+  0b00000,
+  0b11111
+};
+
+// custom character 'Π'
+byte PIE[8] = {
+  0b00000,
+  0b11111,
+  0b10001,
+  0b10001,
+  0b10001,
+  0b10001,
+  0b10001,
+  0b00000
+};
+
+// custom character 'Φ'
+byte FI[8] = {
+  0b00000,
+  0b00100,
+  0b01110,
+  0b10101,
+  0b10101,
+  0b01110,
+  0b00100,
+  0b00000
+};
+
+// custom character 'Ψ'
+byte PSI[8] = {
+  0b00000,
+  0b10101,
+  0b10101,
+  0b10101,
+  0b11111,
+  0b00100,
+  0b00100,
+  0b00000
+};
+  
+
 void setup() {
   Serial.begin(9600);
-  pinMode(12, INPUT);
+  pinMode(7, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   
   // random
@@ -136,6 +233,30 @@ void setup() {
 
   // rtc
   init_rtc("__DATE__", __TIME__);
+
+   // custom character 'Γ'
+  lcd.createChar(0, GAMMA);
+
+  // custom character 'Δ'
+  lcd.createChar(1, DELTA);
+
+  // custom character 'Θ'
+  lcd.createChar(2, THETA);
+
+  // custom character 'Λ'
+  lcd.createChar(3, LAMDA);
+
+  // custom character 'Π'
+  lcd.createChar(4, KSI);
+
+  // custom character 'Π'
+  lcd.createChar(5, PIE);
+
+  // custom character 'Φ'
+  lcd.createChar(6, FI);
+
+  // custom character 'Ψ'
+  lcd.createChar(7, PSI);
 
   // LCD
   lcd.begin(16, 2);
@@ -154,8 +275,9 @@ void loop() {
 
   if ((button_states & push_mask) == 2 && !disable_button_push) {  // button push - Action 1
     digitalWrite(LED_BUILTIN, 1);
+
     
-    char* food = NULL;
+    const char* food = NULL;
     while(food == NULL) {
       food = next_item();
     }
@@ -308,7 +430,7 @@ const char* next_item() {
 }
 
 // This function takes a string as an arguement and translates it to the appropriate greek (uppercase) characters and prints it on the lcd.
-void print_food_greek (char* food_item) {
+void print_food_greek (const char* food_item) {
 
   // mapping the english character string to its equivelant greek character string for printing 
   uint8_t i = 0;
@@ -333,6 +455,7 @@ void print_food_greek (char* food_item) {
         break;
       case 'J': // KSI
         lcd.write((byte)4); // custom
+        break;
       case 'P': 
         lcd.write((byte)5); // custom
         break;
@@ -340,7 +463,7 @@ void print_food_greek (char* food_item) {
         lcd.write('P');
         break;
       case 'S': // SIGMA
-        lcd.write(); // LCD ROM
+        lcd.write(246); // LCD ROM
         break;
       case 'F': 
         lcd.write((byte)6); // custom
