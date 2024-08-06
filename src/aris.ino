@@ -44,21 +44,21 @@ food_item array[69] = {
   { "MAKARONIA ME KIMA", 6 },         // 1 + 3
   { "KANELONIA", 7 },               // 4 + 1
   { "KREAS ME RYZI", 10 },             // 5 + 3
-  { "GIOYVETSI", 12 },              // 8 + 2
+  { "GIOYBETSI", 12 },              // 8 + 2
   { "KREAS ME XYLOPITES", 13 },       // 10 + 1
   { "KREAS ME MAKARONIA", 14 },       // 11 + 1
   { "KREAS ME PATATES", 18 },         // 12 + 4
   { "KREAS LEMONATO", 21 },          // 16 + 3
   { "KREAS KOKKINISTO", 24 },        // 19 + 3
-  { "KREAS ME POURE", 26 },           // 22 + 2
+  { "KREAS ME POYRE", 26 },           // 22 + 2
   { "SYKWTI", 28 },                 // 24 + 2
   { "MPIFTEKIA", 31 },              // 26 + 3
   { "KEFTEDAKIA", 32 },             // 29 + 1
   { "SPETSOFAI", 33 },              // 30 + 1
-  { "SOUTZOUKAKIA", 34 },           // 31 + 1
+  { "SOYTZOYKAKIA", 34 },           // 31 + 1
   { "MPRIZOLES", 35 },              // 32 + 1
   { "ROLO", 36 },                   // 33 + 1
-  { "PAPOUTSAKIA", 37 },            // 34 + 1
+  { "PAPOYTSAKIA", 37 },            // 34 + 1
   { "THGANIA", 38 },                // 35 + 1
   
 // Meat - Winter
@@ -128,10 +128,10 @@ LiquidCrystal lcd(12, 11, 2, 3, 4, 5);
 
 // custom character 'Γ'
 byte GAMMA[8] = {
-  0b00000,
   0b11111,
-  0b00000,
-  0b00000,
+  0b10000,
+  0b10000,
+  0b10000,
   0b10000,
   0b10000,
   0b10000,
@@ -140,10 +140,10 @@ byte GAMMA[8] = {
 
 // custom character 'Δ'
 byte DELTA[8] = {
-  0b00000,
   0b00100,
   0b01010,
   0b01010,
+  0b10001,
   0b10001,
   0b10001,
   0b11111,
@@ -152,22 +152,22 @@ byte DELTA[8] = {
 
 // custom character 'Θ'
 byte THETA[8] = {
-  0b00000,
   0b01110,
   0b10001,
   0b10001,
   0b11111,
   0b10001,
-  0b11111,
-  0b01110
+  0b10001,
+  0b01110,
+  0b00000
 };
 
 // custom character 'Λ'
 byte LAMDA[8] = {
-  0b00000,
   0b00100,
   0b01010,
   0b01010,
+  0b10001,
   0b10001,
   0b10001,
   0b10001,
@@ -176,20 +176,20 @@ byte LAMDA[8] = {
 
 // custom character 'Ξ'
 byte KSI[8] = {
-  0b00000,
   0b11111,
   0b00000,
   0b00000,
   0b11111,
   0b00000,
   0b00000,
-  0b11111
+  0b11111,
+  0b00000
 };
 
 // custom character 'Π'
 byte PIE[8] = {
-  0b00000,
   0b11111,
+  0b10001,
   0b10001,
   0b10001,
   0b10001,
@@ -200,9 +200,9 @@ byte PIE[8] = {
 
 // custom character 'Φ'
 byte FI[8] = {
-  0b00000,
   0b00100,
   0b01110,
+  0b10101,
   0b10101,
   0b10101,
   0b01110,
@@ -212,16 +212,18 @@ byte FI[8] = {
 
 // custom character 'Ψ'
 byte PSI[8] = {
-  0b00000,
   0b10101,
   0b10101,
   0b10101,
   0b11111,
   0b00100,
   0b00100,
+  0b00100,
   0b00000
 };
   
+
+
 
 void setup() {
   Serial.begin(9600);
@@ -435,8 +437,10 @@ void print_food_greek (const char* food_item) {
   // mapping the english character string to its equivelant greek character string for printing 
   uint8_t i = 0;
   char c;
+  lcd.clear();
+  lcd.home();
   while((c = food_item[i++]) != '\0') {
-    lcd.home();
+    
     
     // Greek Letters A, B, E, Z, H, I, K, M, N, O, P, T, Y, X are present in the english alphabet so they need not be changed
     // The rest need to be either used from the few cases of greek character in the LCDs ROM or the custom characters we made 
@@ -474,10 +478,15 @@ void print_food_greek (const char* food_item) {
       case 'W': // OMEGA
         lcd.write(244); // LCD ROM
         break;
+      default:
+        lcd.write(c);
     }
+
+    lcd.setCursor(i%16, i/16);
     //SIGMA 246
     //054 psi
     //244 omega
+    Serial.print("yes");
   }
 
 }
