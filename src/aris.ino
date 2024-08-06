@@ -319,40 +319,42 @@ void print_food_greek (char* food_item) {
     // Greek Letters A, B, E, Z, H, I, K, M, N, O, P, T, Y, X are present in the english alphabet so they need not be changed
     // The rest need to be either used from the few cases of greek character in the LCDs ROM or the custom characters we made 
     switch(c) {
-      case 'G':
-        lcd.write((byte)); // custom
+      case 'G': // GAMMA
+        lcd.write((byte)0); // custom
         break;
-      case 'D':
-        lcd.write((byte)); // custom
+      case 'D': // DELTA
+        lcd.write((byte)1); // custom
         break;
-      case '8':
-        lcd.write((byte)); // custom
+      case '8': // THETA
+        lcd.write((byte)2); // custom
         break;
-      case 'L':
-        lcd.write((byte)); // custom
+      case 'L': // LAMDA
+        lcd.write((byte)3); // custom
         break;
-      case 'J':
+      case 'J': // KSI
         lcd.write(); // LCD ROM
-      case 'P':
-        lcd.write(); // LCD ROM
+      case 'P': 
+        lcd.write((byte)4); // custom
         break;
       case 'R':
         lcd.write('P');
         break;
-      case 'S':
+      case 'S': // SIGMA
         lcd.write(); // LCD ROM
         break;
-      case 'F':
-        lcd.write((byte)); // custom
+      case 'F': 
+        lcd.write((byte)5); // custom
         break;
       case 'Q':
-        lcd.write((byte)); // custom
+        lcd.write((byte)6); // custom
         break;
-      case 'W':
-        lcd.write(); // LCD ROM
+      case 'W': // OMEGA
+        lcd.write(244); // LCD ROM
         break;
     }
-
+    //SIGMA 246
+    //054 psi
+    //244 omega
   }
 
 }
