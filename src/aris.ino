@@ -68,12 +68,11 @@ food_item array[69] = {
   { "MPLOYGOYROSOYPA", 44 },       
   { "KOTOSOYPA", 45 }, 
 
-
 // Non Meat - Winter
   { "QAROSOYPA", 47 },             // 108 + 2
   { "XORTOSOYPA", 51 },            // 110 + 4
   { "FASOLADA", 53 },              // 114 + 2
-  { "REVY8IA", 55 },               // 116 + 2
+  { "REBY8IA", 55 },               // 116 + 2
   { "FABA", 56 },                  // 118 + 1
   { "TRAXANAS", 57 },              // 119 + 1
   { "LAXANORYZO", 58 },            // 120 + 1
@@ -263,6 +262,8 @@ void setup() {
   // LCD
   lcd.begin(16, 2);
   lcd.clear();
+
+  print_greek("KALHMERA GIAGIA!");
 }
 
 
@@ -272,24 +273,23 @@ void loop() {
   button_states = button_states | button_input;
 
   // small delay between button positon checks to give apropriate time to the end-user
-  // and not misinterpret button hold and button push s
+  // and not misinterpret button hold and button push
   delay(40);
 
   if ((button_states & push_mask) == 2 && !disable_button_push) {  // button push - Action 1
     digitalWrite(LED_BUILTIN, 1);
-
     
     const char* food = NULL;
     while(food == NULL) {
       food = next_item();
     }
-    print_food_greek(food);
+    print_greek(food);
   } 
   else if (button_states == 0b1111111111111111) {  // button hold - Action 2
     digitalWrite(LED_BUILTIN, 1);
     delay(50);
     digitalWrite(LED_BUILTIN, 0);
-    disable_button_push = 1;  // makes sure that
+    disable_button_push = 1;  // makes sure that in the next cycle of the loop it does not interpret it as a button push
   } 
   else {
     digitalWrite(LED_BUILTIN, 0);
@@ -432,7 +432,7 @@ const char* next_item() {
 }
 
 // This function takes a string as an arguement and translates it to the appropriate greek (uppercase) characters and prints it on the lcd.
-void print_food_greek (const char* food_item) {
+void print_greek (const char* food_item) {
 
   // mapping the english character string to its equivelant greek character string for printing 
   uint8_t i = 0;
@@ -440,7 +440,6 @@ void print_food_greek (const char* food_item) {
   lcd.clear();
   lcd.home();
   while((c = food_item[i++]) != '\0') {
-    
     
     // Greek Letters A, B, E, Z, H, I, K, M, N, O, P, T, Y, X are present in the english alphabet so they need not be changed
     // The rest need to be either used from the few cases of greek character in the LCDs ROM or the custom characters we made 
@@ -472,7 +471,7 @@ void print_food_greek (const char* food_item) {
       case 'F': 
         lcd.write((byte)6); // custom
         break;
-      case 'Q':
+      case 'Q': // PSI
         lcd.write((byte)7); // custom
         break;
       case 'W': // OMEGA
