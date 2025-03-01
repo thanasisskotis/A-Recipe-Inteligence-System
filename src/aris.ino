@@ -31,92 +31,94 @@ uint8_t already_recommended_num = 0;
 
 // Food Recommender
 typedef struct food_item {
-  const char* food_name;
-  uint8_t val;
+    const char* food_name;
+    const char* food_name_rest;
+    uint8_t val;
 } food_item;
 
 food_item array[69] = {
 // Meat - Summer
-  { "KOLOKY8AKIA GEMISTA", 2 },
+    { "KOLOKY8AKIA", "GEMISTA", 2 },
 
 // Meat - FFA 
-  { "PASTITSIO", 3 },
-  { "MAKARONIA ME KIMA", 6 },         // 1 + 3
-  { "KANELONIA", 7 },               // 4 + 1
-  { "KREAS ME RYZI", 10 },             // 5 + 3
-  { "GIOYBETSI", 12 },              // 8 + 2
-  { "KREAS ME XYLOPITES", 13 },       // 10 + 1
-  { "KREAS ME MAKARONIA", 14 },       // 11 + 1
-  { "KREAS ME PATATES", 18 },         // 12 + 4
-  { "KREAS LEMONATO", 21 },          // 16 + 3
-  { "KREAS KOKKINISTO", 24 },        // 19 + 3
-  { "KREAS ME POYRE", 26 },           // 22 + 2
-  { "SYKWTI", 28 },                 // 24 + 2
-  { "MPIFTEKIA", 31 },              // 26 + 3
-  { "KEFTEDAKIA", 32 },             // 29 + 1
-  { "SPETSOFAI", 33 },              // 30 + 1
-  { "SOYTZOYKAKIA", 34 },           // 31 + 1
-  { "MPRIZOLES", 35 },              // 32 + 1
-  { "ROLO", 36 },                   // 33 + 1
-  { "PAPOYTSAKIA", 37 },            // 34 + 1
-  { "THGANIA", 38 },                // 35 + 1
+    { "PASTITSIO", 3 },
+    { "MAKARONIA ME", "KIMA", 6 },             
+    { "KANELONIA", 7 },                         
+    { "KREAS ME", "RYZI", 10 },                 
+    { "GIOYBETSI", 12 },                        
+    { "KREAS ME", "XYLOPITES", 13 },            
+    { "KREAS ME", "MAKARONIA", 14 },            
+    { "KREAS ME", "PATATES", 18 },              
+    { "KREAS", "LEMONATO", 21 },                
+    { "KREAS", "KOKKINISTO", 24 },            
+    { "KREAS ME", "POYRE", 26 },            
+    { "SYKWTI", 28 },                      
+    { "MPIFTEKIA", 31 },              
+    { "KEFTEDAKIA", 32 },                    
+    { "SPETSOFAI", 33 },                      
+    { "SOYTZOYKAKIA", 34 },                     
+    { "MPRIZOLES", 35 },                        
+    { "ROLO", 36 },                            
+    { "PAPOYTSAKIA", 37 },                      
+    { "THGANIA", 38 },                          
   
 // Meat - Winter
-  { "STIFADO", 39 },               
-  { "LAXANONTOLMADES", 41 },       
-  { "FRIKASE", 42 },               
-  { "MPLOYGOYROSOYPA", 44 },       
-  { "KOTOSOYPA", 45 }, 
+    { "STIFADO", 39 },               
+    { "LAXANON", "TOLMADES", 41 },       
+    { "FRIKASE", 42 },               
+    { "MPLOYGOYRO", "SOYPA", 44 },       
+    { "KOTOSOYPA", 45 }, 
 
 // Non Meat - Winter
-  { "QAROSOYPA", 47 },             // 108 + 2
-  { "XORTOSOYPA", 51 },            // 110 + 4
-  { "FASOLADA", 53 },              // 114 + 2
-  { "REBY8IA", 55 },               // 116 + 2
-  { "FABA", 56 },                  // 118 + 1
-  { "TRAXANAS", 57 },              // 119 + 1
-  { "LAXANORYZO", 58 },            // 120 + 1
-  { "XYLOPITES ME MELITZANES", 59 },
+    { "QAROSOYPA", 47 },             
+    { "XORTOSOYPA", 51 },            
+    { "FASOLADA", 53 },              
+    { "REBY8IA", 55 },               
+    { "FABA", 56 },                  
+    { "TRAXANAS", 57 },             
+    { "LAXANORYZO", 58 },            
+    { "XYLOPITES ME", "MELITZANES", 59 },
 
 // Non Meat - FFA
-  { "MANESTRA", 60 },               // 36 + 1
-  { "MPAMIES", 61 },                // 37 + 1
-  { "SPANAKORYZO", 63 },            // 38 + 2
-  { "SOYFLE", 65 },                 // 40 + 2
-  { "KOLOKY8OKEFTEDES", 66 },       // 42 + 1
-  { "MAKARONIA ME SALTSA", 71 },      // 43 + 5
-  { "MAKARONIA ME KIMA", 72 },   // 48 + 1
-  { "TORTELINIA", 73 },             // 49 + 1
-  { "XYLOPITES MAKRIES", 74 },       // 50 + 1
-  { "KAGIANAS", 75 },               // 51 + 1
-  { "PATATOKROKETES", 76 },         // 52 + 1
-  { "QARI PLAKI", 77 },              // 53 + 1
-  { "XYLOPITES KONTES", 78 },        // 54 + 1
-  { "FAKES", 80 },                  // 55 + 2
-  { "MANITARIA LADORIGANH", 81 },    // 57 + 1
-  { "MANITARIA ALA KREM", 82 },       // 58 + 1
-  { "TSIPOYRES", 86 },              // 59 + 4
-  { "KOKKINOQARO", 90 },            // 63 + 4
-  { "MPAKALIAROS", 93 },            // 67 + 3
-  { "GALAIOS", 94 },                // 70 + 1
-  { "PROSFYGAKIA", 95 },            // 71 + 1
-  { "GAVROS", 97 },                 // 72 + 2
-  { "QARAKIA THGANITA", 99 },        // 74 + 2
-  { "GARIDES", 100 },                // 76 + 1
-  { "GARIDOMAKARONADA", 101 },       // 77 + 1
-  { "JESPYRIA", 102 },               // 78 + 1
-  { "GIGANTES", 103 },               // 79 + 1
-  { "MPRIAM", 108 },                 // 80 + 5
-  { "PATATES MPLOYM", 111 },          // 85 + 3
-  { "ARAKAS", 114 },                 // 88 + 3
-  { "IMAM MPAILNTI", 115 },           
-  { "PILAFI ME MANITARIA", 116 },
+    { "MANESTRA", 60 },                 
+    { "MPAMIES", 61 },               
+    { "SPANAKORYZO", 63 },            
+    { "SOYFLE", 65 },                 
+    { "KOLOKY8O", "KEFTEDES", 66 },     
+    { "MAKARONIA ME", "SALTSA", 71 },     
+    { "MAKARONIA ME", "KIMA", 72 },
+    { "TORTELINIA", 73 },             
+    { "XYLOPITES", "MAKRIES", 74 },     
+    { "KAGIANAS", 75 },               
+    { "PATATO", "KROKETES", 76 },         
+    { "QARI PLAKI", 77 },              
+    { "XYLOPITES", "KONTES", 78 },       
+    { "FAKES", 80 },                  
+    { "MANITARIA", "LADORIGANH", 81 },   
+    { "MANITARIA ALA", "KREM", 82 },       
+    { "TSIPOYRES", 86 },              
+    { "KOKKINO", "QARO", 90 },            
+    { "MPAKALIAROS", 93 },            
+    { "GALAIOS", 94 },                
+    { "PROSFYGAKIA", 95 },            
+    { "GABROS", 97 },                 
+    { "QARAKIA", "THGANITA", 99 },        
+    { "GARIDES", 100 },                
+    { "GARIDO", "MAKARONADA", 101 },      
+    { "JESPYRIA", 102 },               
+    { "GIGANTES", 103 },               
+    { "MPRIAM", 108 },                 
+    { "PATATES", "MPLOYM", 111 },          
+    { "ARAKAS", 114 },                 
+    { "IMAM", "MPAILNTI", 115 },           
+    { "PILAFI ME", "MANITARIA", 116 },
 
 // Non Meat - Summer
-  { "GEMISTA", 119 },                
-  { "KOLOKY8OKORFADES", 120 },       
-  { "FASOLAKIA", 122 }
+    { "GEMISTA", 119 },                
+    { "KOLOKY8O", "KORFADES", 120 },       
+    { "FASOLAKIA", 122 }
 };
+
 
 // A set that contains all the food items that have been recommended
 // in this session, as to not have repeats.
