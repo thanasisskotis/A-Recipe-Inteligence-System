@@ -50,6 +50,7 @@ uint8_t Day() {
     return day == 0 ? 7 : day;
 }
 
+// returns the month 
 uint8_t Month() {
     RtcDateTime current_time = rtc.GetDateTime();
     return current_time.Month();
