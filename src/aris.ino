@@ -41,82 +41,82 @@ food_item array[69] = {
     { "KOLOKY8AKIA", "GEMISTA", 2 },
 
 // Meat - FFA 
-    { "PASTITSIO", 3 },
-    { "MAKARONIA ME", "KIMA", 6 },             
-    { "KANELONIA", 7 },                         
-    { "KREAS ME", "RYZI", 10 },                 
-    { "GIOYBETSI", 12 },                        
-    { "KREAS ME", "XYLOPITES", 13 },            
-    { "KREAS ME", "MAKARONIA", 14 },            
-    { "KREAS ME", "PATATES", 18 },              
-    { "KREAS", "LEMONATO", 21 },                
-    { "KREAS", "KOKKINISTO", 24 },            
-    { "KREAS ME", "POYRE", 26 },            
-    { "SYKWTI", 28 },                      
-    { "MPIFTEKIA", 31 },              
-    { "KEFTEDAKIA", 32 },                    
-    { "SPETSOFAI", 33 },                      
-    { "SOYTZOYKAKIA", 34 },                     
-    { "MPRIZOLES", 35 },                        
-    { "ROLO", 36 },                            
-    { "PAPOYTSAKIA", 37 },                      
-    { "THGANIA", 38 },                          
+    { "PASTITSIO", NULL, 3 },
+    { "MAKARONIA ME", "KIMA", 6 },
+    { "KANELONIA", NULL, 7 },
+    { "KREAS ME", "RYZI", 10 },
+    { "GIOYBETSI", NULL, 12 },
+    { "KREAS ME", "XYLOPITES", 13 },
+    { "KREAS ME", "MAKARONIA", 14 },
+    { "KREAS ME", "PATATES", 18 },
+    { "KREAS", "LEMONATO", 21 },
+    { "KREAS", "KOKKINISTO", 24 },
+    { "KREAS ME", "POYRE", 26 },
+    { "SYKWTI", NULL, 28 },
+    { "MPIFTEKIA", NULL, 31 },
+    { "KEFTEDAKIA", NULL, 32 },
+    { "SPETSOFAI", NULL, 33 },
+    { "SOYTZOYKAKIA", NULL, 34 },
+    { "MPRIZOLES", NULL, 35 },
+    { "ROLO", NULL, 36 },
+    { "PAPOYTSAKIA", NULL, 37 },
+    { "THGANIA", NULL, 38 },
   
 // Meat - Winter
-    { "STIFADO", 39 },               
+    { "STIFADO", NULL, 39 },               
     { "LAXANON", "TOLMADES", 41 },       
-    { "FRIKASE", 42 },               
+    { "FRIKASE", NULL, 42 },               
     { "MPLOYGOYRO", "SOYPA", 44 },       
-    { "KOTOSOYPA", 45 }, 
+    { "KOTOSOYPA", NULL, 45 }, 
 
 // Non Meat - Winter
-    { "QAROSOYPA", 47 },             
-    { "XORTOSOYPA", 51 },            
-    { "FASOLADA", 53 },              
-    { "REBY8IA", 55 },               
-    { "FABA", 56 },                  
-    { "TRAXANAS", 57 },             
-    { "LAXANORYZO", 58 },            
+    { "QAROSOYPA", NULL, 47 },
+    { "XORTOSOYPA", NULL, 51 },
+    { "FASOLADA", NULL, 53 },
+    { "REBY8IA", NULL, 55 },
+    { "FABA", NULL, 56 },
+    { "TRAXANAS", NULL, 57 },
+    { "LAXANORYZO", NULL, 58 },
     { "XYLOPITES ME", "MELITZANES", 59 },
 
 // Non Meat - FFA
-    { "MANESTRA", 60 },                 
-    { "MPAMIES", 61 },               
-    { "SPANAKORYZO", 63 },            
-    { "SOYFLE", 65 },                 
-    { "KOLOKY8O", "KEFTEDES", 66 },     
-    { "MAKARONIA ME", "SALTSA", 71 },     
+    { "MANESTRA", NULL, 60 },
+    { "MPAMIES", NULL, 61 },
+    { "SPANAKORYZO", NULL, 63 },
+    { "SOYFLE", NULL, 65 },
+    { "KOLOKY8O", "KEFTEDES", 66 },
+    { "MAKARONIA ME", "SALTSA", 71 },
     { "MAKARONIA ME", "KIMA", 72 },
-    { "TORTELINIA", 73 },             
-    { "XYLOPITES", "MAKRIES", 74 },     
-    { "KAGIANAS", 75 },               
-    { "PATATO", "KROKETES", 76 },         
-    { "QARI PLAKI", 77 },              
-    { "XYLOPITES", "KONTES", 78 },       
-    { "FAKES", 80 },                  
-    { "MANITARIA", "LADORIGANH", 81 },   
-    { "MANITARIA ALA", "KREM", 82 },       
-    { "TSIPOYRES", 86 },              
-    { "KOKKINO", "QARO", 90 },            
-    { "MPAKALIAROS", 93 },            
-    { "GALAIOS", 94 },                
-    { "PROSFYGAKIA", 95 },            
-    { "GABROS", 97 },                 
-    { "QARAKIA", "THGANITA", 99 },        
-    { "GARIDES", 100 },                
-    { "GARIDO", "MAKARONADA", 101 },      
-    { "JESPYRIA", 102 },               
-    { "GIGANTES", 103 },               
-    { "MPRIAM", 108 },                 
-    { "PATATES", "MPLOYM", 111 },          
-    { "ARAKAS", 114 },                 
+    { "TORTELINIA", NULL, 73 },
+    { "XYLOPITES", "MAKRIES", 74 },
+    { "KAGIANAS", NULL, 75 },
+    { "PATATO", "KROKETES", 76 },
+    { "QARI PLAKI", NULL, 77 },
+    { "XYLOPITES", "KONTES", 78 },
+    { "FAKES", NULL, 80 },
+    { "MANITARIA", "LADORIGANH", 81 },
+    { "MANITARIA ALA", "KREM", 82 },
+    { "TSIPOYRES", NULL, 86 },
+    { "KOKKINO", "QARO", 90 },
+    { "MPAKALIAROS", NULL, 93 },
+    { "GALAIOS", NULL, 94 },
+    { "PROSFYGAKIA", NULL, 95 },
+    { "GABROS", NULL, 97 },
+    { "QARAKIA", "THGANITA", 99 },
+    { "GARIDES", NULL, 100 },
+    { "GARIDO", "MAKARONADA", 101 },
+    { "JESPYRIA", NULL, 102 },
+    { "GIGANTES", NULL, 103 },
+    { "MPRIAM", NULL, 108 },
+    { "PATATES", "MPLOYM", 111 },
+    { "ARAKAS", NULL, 114 },
     { "IMAM", "MPAILNTI", 115 },           
     { "PILAFI ME", "MANITARIA", 116 },
 
 // Non Meat - Summer
-    { "GEMISTA", 119 },                
+    { "GEMISTA", NULL, 119 },                
     { "KOLOKY8O", "KORFADES", 120 },       
-    { "FASOLAKIA", 122 }
+    { "FASOLAKIA", NULL, 122 }
 };
 
 
@@ -270,33 +270,42 @@ void setup() {
 
 
 void loop() {
-  button_input = digitalRead(7);
-  button_states = button_states << 1;
-  button_states = button_states | button_input;
+    button_input = digitalRead(7);
+    button_states = button_states << 1;
+    button_states = button_states | button_input;
 
-  // small delay between button positon checks to give apropriate time to the end-user
-  // and not misinterpret button hold and button push
-  delay(40);
+    // small delay between button positon checks to give apropriate time to the end-user
+    // and not misinterpret button hold and button push
+    delay(40);
 
-  if ((button_states & push_mask) == 2 && !disable_button_push) {  // button push - Action 1
-    digitalWrite(LED_BUILTIN, 1);
+    if ((button_states & push_mask) == 2 && !disable_button_push) {  // button push - Action 1
+        digitalWrite(LED_BUILTIN, 1);
     
-    const char* food = NULL;
-    while(food == NULL) {
-      food = next_item();
+        // searching for the next food to print (next_item() might return {NULL, NULL, NULL} in which case we need to call it again)
+        food_item food = {NULL, NULL, NULL};
+        while(food.food_name == NULL) {
+            food = next_item();
+        }
+        
+        // printing the next item on the LCD
+        lcd.clear();
+        print_greek(food.food_name);
+        if(food.food_name_rest != NULL) {
+            lcd.setCursor(0, 1);
+            print_greek(food.food_name_rest);
+        }
+
+    } 
+    else if (button_states == 0b1111111111111111) {  // button hold - Action 2
+        digitalWrite(LED_BUILTIN, 1);
+        delay(50);
+        digitalWrite(LED_BUILTIN, 0);
+        disable_button_push = 1;  // makes sure that in the next cycle of the loop it does not interpret it as a button push
+    } 
+    else {
+        digitalWrite(LED_BUILTIN, 0);
+        disable_button_push = 0;
     }
-    print_greek(food);
-  } 
-  else if (button_states == 0b1111111111111111) {  // button hold - Action 2
-    digitalWrite(LED_BUILTIN, 1);
-    delay(50);
-    digitalWrite(LED_BUILTIN, 0);
-    disable_button_push = 1;  // makes sure that in the next cycle of the loop it does not interpret it as a button push
-  } 
-  else {
-    digitalWrite(LED_BUILTIN, 0);
-    disable_button_push = 0;
-  }
 }
 
 
@@ -320,7 +329,7 @@ void loop() {
 // meaning foods with a higher val will be picked more often.
 
 
-const char* next_item() {
+food_item next_item() {
 
   // Get day and month and choose which foods are available
   // for selection by adjusting Binary search's bounds
@@ -392,7 +401,7 @@ const char* next_item() {
   }
   // if we have already recommended all the available foods
   // for this session then we return 
-  if(already_recommended_num == high - low + 1) return "No options left.";
+  if(already_recommended_num == high - low + 1) return {"FTASATE TO", "TELOS!", NULL};
 
   uint8_t rand_num;
   if(low > 0) {
@@ -424,13 +433,13 @@ const char* next_item() {
   // if this food item has already been recommended before we
   // return NULL and call the the function again, else we return
   // the name of the food.
-  if (already_recommended.has(mid)) return NULL;
+  if (already_recommended.has(mid)) return {NULL, NULL, NULL};
 
   // Every time a food is picked to be displayed on screen 
   // it gets added to the set as to not get recommended again this session 
   already_recommended.add(mid);
   ++already_recommended_num;
-  return array[mid].food_name;
+  return array[mid];
 }
 
 // This function takes a string as an arguement and translates it to the appropriate greek (uppercase) characters and prints it on the lcd.
@@ -439,8 +448,6 @@ void print_greek (const char* food_item) {
   // mapping the english character string to its equivelant greek character string for printing 
   uint8_t i = 0;
   char c;
-  lcd.clear();
-  lcd.home();
   while((c = food_item[i++]) != '\0') {
     
     // Greek Letters A, B, E, Z, H, I, K, M, N, O, P, T, Y, X are present in the english alphabet so they need not be changed
@@ -483,11 +490,10 @@ void print_greek (const char* food_item) {
         lcd.write(c);
     }
 
-    lcd.setCursor(i%16, i/16);
     //SIGMA 246
     //054 psi
     //244 omega
-    Serial.print("yes");
+    //Serial.print("yes");
   }
 
 }
