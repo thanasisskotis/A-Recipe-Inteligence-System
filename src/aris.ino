@@ -21,13 +21,13 @@
 #include <LiquidCrystal.h>
 
 // Variable Declaration for button
-word button_states = 0;
-word button_input;
-const word push_mask = 0b0000000000000011;  // to keep the last 2 bits / button inputs
-byte disable_button_push = 0;
+uint16_t button_states = 0;
+uint16_t button_input;
+const uint16_t push_mask = 0b0000000000000011;  // to keep the last 2 bits / button inputs
+bool disable_button_push = false;
+bool hold_action_performed = false; // used if the hold button action is one use only and not continuous (like a led blinking)
 
 uint8_t already_recommended_num = 0;
-
 
 // Food Recommender
 typedef struct food_item {
@@ -36,22 +36,24 @@ typedef struct food_item {
     uint8_t val;
 } food_item;
 
+food_item food;
+
 food_item array[69] = {
 // Meat - Summer
-    { "KOLOKY8AKIA", "GEMISTA", 2 },
+    { "KOLOKY?AKIA", "GEMISTA", 2 },
 
 // Meat - FFA 
     { "PASTITSIO", NULL, 3 },
     { "MAKARONIA ME", "KIMA", 6 },
     { "KANELONIA", NULL, 7 },
-    { "KREAS ME", "RYZI", 10 },
+    { "KREAS ME RYZI", NULL, 10 },
     { "GIOYBETSI", NULL, 12 },
     { "KREAS ME", "XYLOPITES", 13 },
     { "KREAS ME", "MAKARONIA", 14 },
     { "KREAS ME", "PATATES", 18 },
-    { "KREAS", "LEMONATO", 21 },
-    { "KREAS", "KOKKINISTO", 24 },
-    { "KREAS ME", "POYRE", 26 },
+    { "KREAS LEMONATO", NULL, 21 },
+    { "KREAS KOKKINISTO", NULL, 24 },
+    { "KREAS ME POYRE", NULL, 26 },
     { "SYKWTI", NULL, 28 },
     { "MPIFTEKIA", NULL, 31 },
     { "KEFTEDAKIA", NULL, 32 },
@@ -64,16 +66,16 @@ food_item array[69] = {
   
 // Meat - Winter
     { "STIFADO", NULL, 39 },               
-    { "LAXANON", "TOLMADES", 41 },       
+    { "LAXANONTOLMADES", NULL, 41 },       
     { "FRIKASE", NULL, 42 },               
-    { "MPLOYGOYRO", "SOYPA", 44 },       
+    { "MPLOYGOYROSOYPA", NULL, 44 },       
     { "KOTOSOYPA", NULL, 45 }, 
 
 // Non Meat - Winter
     { "QAROSOYPA", NULL, 47 },
     { "XORTOSOYPA", NULL, 51 },
     { "FASOLADA", NULL, 53 },
-    { "REBY8IA", NULL, 55 },
+    { "REBY?IA", NULL, 55 },
     { "FABA", NULL, 56 },
     { "TRAXANAS", NULL, 57 },
     { "LAXANORYZO", NULL, 58 },
@@ -84,38 +86,38 @@ food_item array[69] = {
     { "MPAMIES", NULL, 61 },
     { "SPANAKORYZO", NULL, 63 },
     { "SOYFLE", NULL, 65 },
-    { "KOLOKY8O", "KEFTEDES", 66 },
+    { "KOLOKY?OKEFTEDES", NULL, 66 },
     { "MAKARONIA ME", "SALTSA", 71 },
     { "MAKARONIA ME", "KIMA", 72 },
     { "TORTELINIA", NULL, 73 },
     { "XYLOPITES", "MAKRIES", 74 },
     { "KAGIANAS", NULL, 75 },
-    { "PATATO", "KROKETES", 76 },
+    { "PATATOKROKETES", "", 76 },
     { "QARI PLAKI", NULL, 77 },
-    { "XYLOPITES", "KONTES", 78 },
+    { "XYLOPITES KONTES", NULL, 78 },
     { "FAKES", NULL, 80 },
     { "MANITARIA", "LADORIGANH", 81 },
     { "MANITARIA ALA", "KREM", 82 },
     { "TSIPOYRES", NULL, 86 },
-    { "KOKKINO", "QARO", 90 },
+    { "KOKKINOQARO", NULL, 90 },
     { "MPAKALIAROS", NULL, 93 },
     { "GALAIOS", NULL, 94 },
     { "PROSFYGAKIA", NULL, 95 },
     { "GABROS", NULL, 97 },
     { "QARAKIA", "THGANITA", 99 },
     { "GARIDES", NULL, 100 },
-    { "GARIDO", "MAKARONADA", 101 },
+    { "GARIDOMAKARONADA", NULL, 101 },
     { "JESPYRIA", NULL, 102 },
     { "GIGANTES", NULL, 103 },
     { "MPRIAM", NULL, 108 },
-    { "PATATES", "MPLOYM", 111 },
+    { "PATATES MPLOYM", NULL, 111 },
     { "ARAKAS", NULL, 114 },
-    { "IMAM", "MPAILNTI", 115 },           
+    { "IMAM MPAILNTI", NULL, 115 },           
     { "PILAFI ME", "MANITARIA", 116 },
 
 // Non Meat - Summer
     { "GEMISTA", NULL, 119 },                
-    { "KOLOKY8O", "KORFADES", 120 },       
+    { "KOLOKY?OKORFADES", NULL, 120 },       
     { "FASOLAKIA", NULL, 122 }
 };
 
@@ -129,143 +131,144 @@ LiquidCrystal lcd(12, 11, 2, 3, 4, 5);
 
 // custom character 'Γ'
 byte GAMMA[8] = {
-  0b11111,
-  0b10000,
-  0b10000,
-  0b10000,
-  0b10000,
-  0b10000,
-  0b10000,
-  0b00000
+    0b11111,
+    0b10000,
+    0b10000,
+    0b10000,
+    0b10000,
+    0b10000,
+    0b10000,
+    0b00000
 };
 
 // custom character 'Δ'
 byte DELTA[8] = {
-  0b00100,
-  0b01010,
-  0b01010,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b11111,
-  0b00000
+    0b00100,
+    0b01010,
+    0b01010,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b11111,
+    0b00000
 };
 
 // custom character 'Θ'
 byte THETA[8] = {
-  0b01110,
-  0b10001,
-  0b10001,
-  0b11111,
-  0b10001,
-  0b10001,
-  0b01110,
-  0b00000
+    0b01110,
+    0b10001,
+    0b10001,
+    0b11111,
+    0b10001,
+    0b10001,
+    0b01110,
+    0b00000
 };
 
 // custom character 'Λ'
 byte LAMDA[8] = {
-  0b00100,
-  0b01010,
-  0b01010,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b00000  
+    0b00100,
+    0b01010,
+    0b01010,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b00000  
 };
 
 // custom character 'Ξ'
 byte KSI[8] = {
-  0b11111,
-  0b00000,
-  0b00000,
-  0b11111,
-  0b00000,
-  0b00000,
-  0b11111,
-  0b00000
+    0b11111,
+    0b00000,
+    0b00000,
+    0b11111,
+    0b00000,
+    0b00000,
+    0b11111,
+    0b00000
 };
 
 // custom character 'Π'
 byte PIE[8] = {
-  0b11111,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b10001,
-  0b00000
+    0b11111,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b10001,
+    0b00000
 };
 
 // custom character 'Φ'
 byte FI[8] = {
-  0b00100,
-  0b01110,
-  0b10101,
-  0b10101,
-  0b10101,
-  0b01110,
-  0b00100,
-  0b00000
+    0b00100,
+    0b01110,
+    0b10101,
+    0b10101,
+    0b10101,
+    0b01110,
+    0b00100,
+    0b00000
 };
 
 // custom character 'Ψ'
 byte PSI[8] = {
-  0b10101,
-  0b10101,
-  0b10101,
-  0b11111,
-  0b00100,
-  0b00100,
-  0b00100,
-  0b00000
+    0b10101,
+    0b10101,
+    0b10101,
+    0b11111,
+    0b00100,
+    0b00100,
+    0b00100,
+    0b00000
 };
   
 
 
 
 void setup() {
-  Serial.begin(9600);
-  pinMode(7, INPUT);
-  pinMode(LED_BUILTIN, OUTPUT);
-  
-  // random
-  randomSeed(datetime_seed());
+    Serial.begin(9600);
+    pinMode(7, INPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
+    
+    // random
+    randomSeed(datetime_seed());
 
-  // rtc
-  init_rtc("__DATE__", __TIME__);
+    // rtc
+    init_rtc(__DATE__, __TIME__);
 
-   // custom character 'Γ'
-  lcd.createChar(0, GAMMA);
+    // custom character 'Γ'
+    lcd.createChar(0, GAMMA);
 
-  // custom character 'Δ'
-  lcd.createChar(1, DELTA);
+    // custom character 'Δ'
+    lcd.createChar(1, DELTA);
 
-  // custom character 'Θ'
-  lcd.createChar(2, THETA);
+    // custom character 'Θ'
+    lcd.createChar(2, THETA);
 
-  // custom character 'Λ'
-  lcd.createChar(3, LAMDA);
+    // custom character 'Λ'
+    lcd.createChar(3, LAMDA);
 
-  // custom character 'Π'
-  lcd.createChar(4, KSI);
+    // custom character 'Π'
+    lcd.createChar(4, KSI);
 
-  // custom character 'Π'
-  lcd.createChar(5, PIE);
+    // custom character 'Π'
+    lcd.createChar(5, PIE);
 
-  // custom character 'Φ'
-  lcd.createChar(6, FI);
+    // custom character 'Φ'
+    lcd.createChar(6, FI);
 
-  // custom character 'Ψ'
-  lcd.createChar(7, PSI);
+    // custom character 'Ψ'
+    lcd.createChar(7, PSI);
 
-  // LCD
-  lcd.begin(16, 2);
-  lcd.clear();
+    // LCD
+    lcd.begin(16, 2);
+    lcd.clear();
 
-  print_greek("KALHMERA GIAGIA!");
+    print_greek("KALHMERA GIAGIA!");
+    
 }
 
 
@@ -282,7 +285,7 @@ void loop() {
         digitalWrite(LED_BUILTIN, 1);
     
         // searching for the next food to print (next_item() might return {NULL, NULL, NULL} in which case we need to call it again)
-        food_item food = {NULL, NULL, NULL};
+        food = {NULL, NULL, NULL};
         while(food.food_name == NULL) {
             food = next_item();
         }
@@ -297,15 +300,44 @@ void loop() {
 
     } 
     else if (button_states == 0b1111111111111111) {  // button hold - Action 2
-        digitalWrite(LED_BUILTIN, 1);
-        delay(50);
-        digitalWrite(LED_BUILTIN, 0);
-        disable_button_push = 1;  // makes sure that in the next cycle of the loop it does not interpret it as a button push
+        if(!hold_action_performed) {
+            char* buf = Datestamp();
+            lcd.clear();
+            print_greek(buf);
+            free(buf); 
+
+            buf = Timestamp();
+            lcd.setCursor(0, 1);
+            print_greek(buf);           
+            free(buf); 
+
+            disable_button_push = true;  // makes sure that in the next cycle of the loop it does not interpret it as a button push
+            hold_action_performed = true;
+        }
+
     } 
     else {
-        digitalWrite(LED_BUILTIN, 0);
-        disable_button_push = 0;
+        if(hold_action_performed) {
+            // re-display the current food item after the button hold is over
+            lcd.clear();
+            if(food.food_name != NULL) {
+                print_greek(food.food_name);
+            }
+            if(food.food_name_rest != NULL) {
+                lcd.setCursor(0, 1);
+                print_greek(food.food_name_rest);
+            }
+
+            hold_action_performed = false;
+        }
+        
+        disable_button_push = false;
     }
+
+    // Note: disable_button_push is not used in this code. It is used when the button hold ends after the action is performed 
+    // (meaning it does not have a while loop in the end to check when the button is released). In that case the button hold 
+    // action is performed again and again. Its purpose in that case is to not misinterpret the button release after a button hold
+    // as a new button push :) 
 }
 
 
@@ -401,7 +433,7 @@ food_item next_item() {
   }
   // if we have already recommended all the available foods
   // for this session then we return 
-  if(already_recommended_num == high - low + 1) return {"FTASATE TO", "TELOS!", NULL};
+  if(already_recommended_num == high - low + 1) return {"DEN EXW ALLES", "IDEES!", NULL};
 
   uint8_t rand_num;
   if(low > 0) {
@@ -459,7 +491,7 @@ void print_greek (const char* food_item) {
       case 'D': // DELTA
         lcd.write((byte)1); // custom
         break;
-      case '8': // THETA
+      case '?': // THETA
         lcd.write((byte)2); // custom
         break;
       case 'L': // LAMDA
