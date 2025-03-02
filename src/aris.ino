@@ -360,163 +360,160 @@ void loop() {
 
 food_item next_item() {
 
-  // Get day and month and choose which foods are available
-  // for selection by adjusting Binary search's bounds
-  uint8_t day = Day();
-  int8_t low, high;
+    // Get day and month and choose which foods are available
+    // for selection by adjusting Binary search's bounds
+    uint8_t day = Day();
+    int8_t low, high;
 
-  switch(Month()){
-    // Winter
-    case 11:
-    case 12:
-    case 1:
-    case 2: 
+    switch(Month()) {
+        // Winter
+        case 11:
+        case 12:
+        case 1:
+        case 2: 
 
-      if(day == 3 || day == 5){ // non meat - winter
-        low = 26;
-        high = 65;
-      }
-      else if(day == 7){ // meat - winter
-        low = 1;
-        high = 25;
-      }
-      else{ // both - winter
-        low = 1;
-        high = 65;
-      }
-      break;
-
-    // Summer
-    case 6:
-    case 7: 
-    case 8: 
-
-      if(day == 3 || day == 5){ // non meat - summer
-        low = 34;
-        high = 68;
-      }
-      else if(day == 7){ // meat - summer
-        low = 0;
-        high = 20;
-      }
-      else{ // both - summer
-        // choosing 1 of the 2 groups between meat and non-meat
-        //beacause the range wraps around
-        if(random(0,2) == 0){
-          low = 0;
-          high = 20;
+        if(day == 3 || day == 5) { // non meat - winter
+            low = 26;
+            high = 65;
         }
-        else{
-          low = 34;
-          high = 68;
+        else if(day == 7) { // meat - winter
+            low = 1;
+            high = 25;
         }
-      }
-      break;
+        else { // both - winter
+            low = 1;
+            high = 65;
+        }
+        break;
 
-    default: // open season
+        // Summer
+        case 6:
+        case 7: 
+        case 8: 
 
-      if(day == 3 || day == 5){ // non meat - open season
-        low = 26; 
-        high = 68;
-      } 
-      else if(day == 7){ // meat - open season
-        low = 0;
-        high = 25;
-      }
-      else{ // both - open season
-        low = 0;
-        high = 68;
-      }
-  }
-  // if we have already recommended all the available foods
-  // for this session then we return 
-  if(already_recommended_num == high - low + 1) return {"DEN EXW ALLES", "IDEES!", NULL};
+        if(day == 3 || day == 5) { // non meat - summer
+            low = 34;
+            high = 68;
+        }
+        else if(day == 7) { // meat - summer
+            low = 0;
+            high = 20;
+        }
+        else { // both - summer
+            // choosing 1 of the 2 groups between meat and non-meat
+            //beacause the range wraps around
+            if(random(0,2) == 0) {
+                low = 0;
+                high = 20;
+            }
+            else {
+                low = 34;
+                high = 68;
+            }
+        }
+        break;
 
-  uint8_t rand_num;
-  if(low > 0) {
-    rand_num = random(array[low-1].val + 1, array[high].val + 1);
-  }
-  else if(low == 0) {
-    rand_num = random(0, array[high].val + 1);
-  }
-  else {
-    rand_num = random(array[low + 69 - 1].val + 1, array[high].val + 1);
-  }
+        default: // open season
 
-  // Binary Search Algortihm to find the food item
-  int mid = low + (high - low) / 2;
-  while (low <= high) {
-    mid = low + (high - low) / 2;
+        if(day == 3 || day == 5) { // non meat - open season
+            low = 26; 
+            high = 68;
+        } 
+        else if(day == 7) { // meat - open season
+            low = 0;
+            high = 25;
+        }
+        else { // both - open season
+            low = 0;
+            high = 68;
+        }
+    }
+    // if we have already recommended all the available foods
+    // for this session then we return 
+    if(already_recommended_num == high - low + 1) return {"DEN EXW ALLES", "IDEES!", NULL};
 
-    if (array[mid].val == rand_num)
-      break;
-    else if (array[mid].val < rand_num)
-      low = mid + 1;
-    else
-      high = mid - 1;
-  }
+    uint8_t rand_num;
+    if(low > 0) 
+        rand_num = random(array[low-1].val + 1, array[high].val + 1);
+    else if(low == 0) 
+        rand_num = random(0, array[high].val + 1);
+    else 
+        rand_num = random(array[low + 69 - 1].val + 1, array[high].val + 1);
 
-  // for array loop around
-  if(mid < 0) mid += 69;
+    // Binary Search Algortihm to find the food item
+    int mid = low + (high - low) / 2;
+    while (low <= high) {
+        mid = low + (high - low) / 2;
 
-  // if this food item has already been recommended before we
-  // return NULL and call the the function again, else we return
-  // the name of the food.
-  if (already_recommended.has(mid)) return {NULL, NULL, NULL};
+        if (array[mid].val == rand_num)
+            break;
+        else if (array[mid].val < rand_num)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
 
-  // Every time a food is picked to be displayed on screen 
-  // it gets added to the set as to not get recommended again this session 
-  already_recommended.add(mid);
-  ++already_recommended_num;
-  return array[mid];
+    // for array loop around
+    if(mid < 0) mid += 69;
+
+    // if this food item has already been recommended before we
+    // return NULL and call the the function again, else we return
+    // the name of the food.
+    if (already_recommended.has(mid)) return {NULL, NULL, NULL};
+
+    // Every time a food is picked to be displayed on screen 
+    // it gets added to the set as to not get recommended again this session 
+    already_recommended.add(mid);
+    ++already_recommended_num;
+    return array[mid];
 }
 
 // This function takes a string as an arguement and translates it to the appropriate greek (uppercase) characters and prints it on the lcd.
 void print_greek (const char* food_item) {
 
-  // mapping the english character string to its equivelant greek character string for printing 
-  uint8_t i = 0;
-  char c;
-  while((c = food_item[i++]) != '\0') {
+    // mapping the english character string to its equivelant greek character string for printing 
+    uint8_t i = 0;
+    char c;
+    while((c = food_item[i++]) != '\0') {
     
     // Greek Letters A, B, E, Z, H, I, K, M, N, O, P, T, Y, X are present in the english alphabet so they need not be changed
     // The rest need to be either used from the few cases of greek character in the LCDs ROM or the custom characters we made 
     switch(c) {
-      case 'G': // GAMMA
-        lcd.write((byte)0); // custom
-        break;
-      case 'D': // DELTA
-        lcd.write((byte)1); // custom
-        break;
-      case '?': // THETA
-        lcd.write((byte)2); // custom
-        break;
-      case 'L': // LAMDA
-        lcd.write((byte)3); // custom
-        break;
-      case 'J': // KSI
-        lcd.write((byte)4); // custom
-        break;
-      case 'P': 
-        lcd.write((byte)5); // custom
-        break;
-      case 'R':
-        lcd.write('P');
-        break;
-      case 'S': // SIGMA
-        lcd.write(246); // LCD ROM
-        break;
-      case 'F': 
-        lcd.write((byte)6); // custom
-        break;
-      case 'Q': // PSI
-        lcd.write((byte)7); // custom
-        break;
-      case 'W': // OMEGA
-        lcd.write(244); // LCD ROM
-        break;
-      default:
-        lcd.write(c);
+        case 'G': // GAMMA
+            lcd.write((byte)0); // custom
+            break;
+        case 'D': // DELTA
+            lcd.write((byte)1); // custom
+            break;
+        case '?': // THETA
+            lcd.write((byte)2); // custom
+            break;
+        case 'L': // LAMDA
+            lcd.write((byte)3); // custom
+            break;
+        case 'J': // KSI
+            lcd.write((byte)4); // custom
+            break;
+        case 'P': 
+            lcd.write((byte)5); // custom
+            break;
+        case 'R':
+            lcd.write('P');
+            break;
+        case 'S': // SIGMA
+            lcd.write(246); // LCD ROM
+            break;
+        case 'F': 
+            lcd.write((byte)6); // custom
+            break;
+        case 'Q': // PSI
+            lcd.write((byte)7); // custom
+            break;
+        case 'W': // OMEGA
+            lcd.write(244); // LCD ROM
+            break;
+        default:
+            lcd.write(c);
     }
 
     //SIGMA 246
