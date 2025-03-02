@@ -334,10 +334,6 @@ void loop() {
         disable_button_push = false;
     }
 
-    // Note: disable_button_push is not used in this code. It is used when the button hold ends after the action is performed 
-    // (meaning it does not have a while loop in the end to check when the button is released). In that case the button hold 
-    // action is performed again and again. Its purpose in that case is to not misinterpret the button release after a button hold
-    // as a new button push :) 
 }
 
 
