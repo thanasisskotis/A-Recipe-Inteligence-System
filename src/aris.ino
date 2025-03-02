@@ -1,21 +1,3 @@
-// Program that takes the input of a button and performs:
-// - Action 1 in button push
-// - Action 2 in button hold
-// - Action 3 when button is not pushed
-
-// A bitmap stored in the variable button_states is used to store the button inputs and
-// determine the action to be taken.
-// Each time interval (a custon time interval between button state checks can be used by
-// adjustiong the delay() depending on how responsive you want your program to be, or how
-// much flexibility you want to give to the end user) the state of the button is checked,
-// the bitmap is shifted 1 bit to the left erasing the oldest state adn with a bitwise or
-// the new state is saved in the least significant bit.
-
-// Button press is checked on button release as to be distinguished from button hold.
-// When the button is held the variable disable_button_push is set to 1, as to not
-// interpret the release of the button when held with a button release meant for a press,
-// it is then set back to 0 when the button is inactive.
-
 #include "set.h"
 #include "rtc.h"
 #include <LiquidCrystal.h>
@@ -271,6 +253,25 @@ void setup() {
     
 }
 
+
+
+// Program that takes the input of a button and performs:
+// - Action 1 in button push
+// - Action 2 in button hold
+// - Action 3 when button is not pushed
+
+// A bitmap stored in the variable button_states is used to store the button inputs and
+// determine the action to be taken.
+// Each time interval (a custon time interval between button state checks can be used by
+// adjustiong the delay() depending on how responsive you want your program to be, or how
+// much flexibility you want to give to the end user) the state of the button is checked,
+// the bitmap is shifted 1 bit to the left erasing the oldest state adn with a bitwise or
+// the new state is saved in the least significant bit.
+
+// Button press is checked on button release as to be distinguished from button hold.
+// When the button is held the variable disable_button_push is set to 1, as to not
+// interpret the release of the button when held with a button release meant for a press,
+// it is then set back to 0 when the button is inactive.
 
 void loop() {
     button_input = digitalRead(7);
