@@ -433,24 +433,30 @@ food_item next_item() {
     if(already_recommended_num == high - low + 1) return {"DEN EXW ALLES", "IDEES!", NULL};
 
     uint8_t rand_num;
-    if(low > 0) 
+    if(low > 0) {
         rand_num = random(array[low-1].val + 1, array[high].val + 1);
-    else if(low == 0) 
+    }
+    else if(low == 0) {
         rand_num = random(0, array[high].val + 1);
-    else 
+    }
+    else {
         rand_num = random(array[low + 69 - 1].val + 1, array[high].val + 1);
+    }
 
     // Binary Search Algortihm to find the food item
     int mid = low + (high - low) / 2;
     while (low <= high) {
         mid = low + (high - low) / 2;
 
-        if (array[mid].val == rand_num)
+        if (array[mid].val == rand_num) {
             break;
-        else if (array[mid].val < rand_num)
+        }
+        else if (array[mid].val < rand_num) {
             low = mid + 1;
-        else
+        }
+        else {
             high = mid - 1;
+        }
     }
 
     // for array loop around
